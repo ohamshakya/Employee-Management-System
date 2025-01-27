@@ -4,13 +4,14 @@ import com.project.employeemanagementsystem.ems.common.enums.Gender;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDto {
-
     private Integer id;
 
     @NotNull(message = "firstname is mandatory")
@@ -30,4 +31,6 @@ public class EmployeeDto {
 
     @NotNull(message = "email is mandatory")
     private String email;
+
+    List<LeaveDto> leaveDtoList;
 }

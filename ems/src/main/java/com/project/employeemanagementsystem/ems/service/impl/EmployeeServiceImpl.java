@@ -1,11 +1,13 @@
 package com.project.employeemanagementsystem.ems.service.impl;
 
 import com.project.employeemanagementsystem.ems.common.exception.ResourceNotFoundException;
+import com.project.employeemanagementsystem.ems.common.utils.Messages;
 import com.project.employeemanagementsystem.ems.dto.EmployeeDto;
 import com.project.employeemanagementsystem.ems.entity.Employee;
 import com.project.employeemanagementsystem.ems.mapper.EmployeeMapper;
 import com.project.employeemanagementsystem.ems.repository.EmployeeRepo;
 import com.project.employeemanagementsystem.ems.service.EmployeeService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +25,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public EmployeeDto create(EmployeeDto employeeDto) {
         log.info("create service");
-        Employee employee = new Employee();
-        employee.setFirstName(employeeDto.getFirstName());
-        employee.setLastName(employeeDto.getLastName());
-        employee.setGender(employeeDto.getGender());
-        employee.setAge(employeeDto.getAge());
-        employee.setContactNumber(employeeDto.getContactNumber());
-        employee.setEmail(employeeDto.getEmail());
-        employeeRepo.save(employee);
+        Employee employee = EmployeeMapper.toEntity(employeeDto);
+       employee =  employeeRepo.save(employee);
         return EmployeeMapper.toDto(employee);
     }
 
@@ -53,17 +50,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void delete(Integer id) {
         log.info("Inside delete service");
-        employeeRepo.deleteById(id);
+        Employee existingEmployee = employeeRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(Messages.EMPLOYEE_NOT_FOUND));
+        employeeRepo.delete(existingEmployee);
     }
 
     @Override
     public EmployeeDto getEmployeeById(Integer id) {
-       Employee employee = employeeRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("NOt found"));
+        log.info("Get employee by id service");
+       Employee employee = employeeRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(Messages.EMPLOYEE_NOT_FOUND));
        return EmployeeMapper.toDto(employee);
     }
 
     @Override
     public List<EmployeeDto> getAllEmployee() {
+        log.info("Get all employee service");
         List<Employee> employees = employeeRepo.findAll();
         return employees.stream().map(EmployeeMapper::toDto).collect(Collectors.toList());
     }

@@ -3,5 +3,32 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+    <changeSet id="20252301" author="oham">
+        <createTable tableName="employees">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gender" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_number" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>
