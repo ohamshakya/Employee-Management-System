@@ -15,14 +15,16 @@ import java.util.Optional;
 
 @RestController
 @Slf4j
-@RequestMapping("/api")
+@RequestMapping("api/employee")
 @CrossOrigin(origins = "*")
 public class EmployeeController {
+
     private EmployeeService employeeService;
+
     //for default pagination
     public static final int DEFAULT_PAGE_SIZE = 10;
-    public static final String SORT_BY = "ASC";
-    public static final String SORT_ORDER = "updatedAt";
+    public static final String SORT_BY = "updatedAt";
+    public static final String SORT_ORDER = "ASC";
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -41,7 +43,7 @@ public class EmployeeController {
         return new ResponseWrapper<>(employeeDto, Messages.EMPLOYEE_RETRIEVED_SUCCESSFULLY, HttpStatus.OK.value());
     }
 
-    @GetMapping
+    @GetMapping()
     public ResponseWrapper<Object> getAllEmployees(@RequestParam("query") Optional<String> firstName,
                                                    @RequestParam("page") Optional<Integer> page,
                                                    @RequestParam("size") Optional<Integer> size,

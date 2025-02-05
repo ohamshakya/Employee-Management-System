@@ -13,8 +13,7 @@ public interface EmployeeRepo extends JpaRepository<Employee, Integer> {
 
     Employee findEmployeeByFirstName(String firstName);
 
-    @Query("SELECT e FROM Employee e where LOWER(e.firstName) LIKE LOWER(CONCAT('%', :query, '%')) " +
-            "OR LOWER(e.firstName) LIKE LOWER(CONCAT('%', :query, '%') ) ")
+    @Query("SELECT e FROM Employee e where LOWER(e.firstName) LIKE LOWER(CONCAT('%', :query, '%'))OR LOWER(e.firstName) LIKE LOWER(CONCAT('%', :query, '%') ) ")
     Page<Employee> searchEmployee(@Param("query") String employeeName, Pageable pageable);
 
 }

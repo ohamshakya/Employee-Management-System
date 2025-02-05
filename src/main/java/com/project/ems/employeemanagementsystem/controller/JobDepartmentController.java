@@ -20,8 +20,8 @@ public class JobDepartmentController {
 
     //for default pagination size , sort by and sort order
     public static final int DEFAULT_PAGE_SIZE = 10;
-    public static final String SORT_BY = "ASC";
-    public static final String SORT_ORDER = "updatedAt";
+    public static final String SORT_BY = "updatedAt";
+    public static final String SORT_ORDER = "ASC";
 
     public JobDepartmentController(JobDepartmentService jobDepartmentService) {
         this.jobDepartmentService = jobDepartmentService;
