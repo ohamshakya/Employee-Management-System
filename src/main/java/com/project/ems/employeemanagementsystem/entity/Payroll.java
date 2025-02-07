@@ -23,10 +23,17 @@ public class Payroll {
     private Integer id;
 
     @CreationTimestamp
-
     private LocalDateTime date;
 
     private String report;
 
     private BigDecimal totalAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name = "job_department_id")
+    private JobDepartment jobDepartment;
 }

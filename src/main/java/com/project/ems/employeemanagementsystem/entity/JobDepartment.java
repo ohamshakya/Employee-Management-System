@@ -1,5 +1,6 @@
 package com.project.ems.employeemanagementsystem.entity;
 
+import com.project.ems.employeemanagementsystem.dto.PayrollDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,4 +35,7 @@ public class JobDepartment {
 
     @OneToMany(mappedBy = "jobDepartment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Salary> salaryList;
+
+    @OneToMany(mappedBy = "jobDepartment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Payroll> payrollList;
 }

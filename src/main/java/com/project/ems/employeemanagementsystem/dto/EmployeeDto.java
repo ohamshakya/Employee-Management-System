@@ -35,11 +35,13 @@ public class EmployeeDto {
     @NotNull(message = "email is mandatory")
     private String email;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     private List<LeaveDto> leavesDtoList;
 
     private List<QualificationDto> qualificationsDtoList;
+
+    private List<PayrollDto> payrollDtoList;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }

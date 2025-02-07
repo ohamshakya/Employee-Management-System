@@ -1,8 +1,10 @@
 package com.project.ems.employeemanagementsystem.mapper;
 
 import com.project.ems.employeemanagementsystem.dto.JobDepartmentDto;
+import com.project.ems.employeemanagementsystem.dto.PayrollDto;
 import com.project.ems.employeemanagementsystem.dto.SalaryDto;
 import com.project.ems.employeemanagementsystem.entity.JobDepartment;
+import com.project.ems.employeemanagementsystem.entity.Payroll;
 import com.project.ems.employeemanagementsystem.entity.Salary;
 
 import java.util.ArrayList;
@@ -31,6 +33,21 @@ public class JobDepartmentMapper {
                 }
             }
         }
+
+        List<Payroll> payrollList = new ArrayList<>();
+        if(jobDepartment.getPayrollList() != null){
+            for(PayrollDto payrollDto : jobDepartmentDto.getPayrollDtoList()){
+                if(payrollDto != null){
+                    Payroll payroll = new Payroll();
+                    payroll.setDate(payrollDto.getDate());
+                    payroll.setReport(payrollDto.getReport());
+                    payroll.setTotalAmount(payrollDto.getTotalAmount());
+                    payroll.setJobDepartment(jobDepartment);
+                    payrollList.add(payroll);
+                }
+            }
+        }
+        jobDepartment.setPayrollList(payrollList);
         jobDepartment.setSalaryList(salaryList);
         return jobDepartment;
     }
@@ -57,7 +74,22 @@ public class JobDepartmentMapper {
                 }
             }
         }
+        List<PayrollDto> payrollDtoList = new ArrayList<>();
+        if(jobDepartment.getPayrollList() != null){
+            for(Payroll payroll : jobDepartment.getPayrollList()){
+                if(payroll != null){
+                    PayrollDto payrollDto = new PayrollDto();
+                    payrollDto.setId(payroll.getId());
+                    payrollDto.setDate(payroll.getDate());
+                    payrollDto.setReport(payroll.getReport());
+                    payrollDto.setTotalAmount(payroll.getTotalAmount());
+                    payrollDtoList.add(payrollDto);
+                }
+            }
+        }
+
         jobDepartmentDto.setSalaryDtoList(salaryDtoList);
+        jobDepartmentDto.setPayrollDtoList(payrollDtoList);
         return jobDepartmentDto;
     }
 

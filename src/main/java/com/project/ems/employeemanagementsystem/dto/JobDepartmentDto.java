@@ -23,4 +23,6 @@ public class JobDepartmentDto {
     private Long SalaryRange;
 
     private List<SalaryDto> salaryDtoList;
+
+    private List<PayrollDto> payrollDtoList;
 }

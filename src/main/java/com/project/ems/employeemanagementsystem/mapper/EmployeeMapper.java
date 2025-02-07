@@ -2,9 +2,11 @@ package com.project.ems.employeemanagementsystem.mapper;
 
 import com.project.ems.employeemanagementsystem.dto.EmployeeDto;
 import com.project.ems.employeemanagementsystem.dto.LeaveDto;
+import com.project.ems.employeemanagementsystem.dto.PayrollDto;
 import com.project.ems.employeemanagementsystem.dto.QualificationDto;
 import com.project.ems.employeemanagementsystem.entity.Employee;
 import com.project.ems.employeemanagementsystem.entity.Leave;
+import com.project.ems.employeemanagementsystem.entity.Payroll;
 import com.project.ems.employeemanagementsystem.entity.Qualification;
 
 import java.util.ArrayList;
@@ -50,6 +52,19 @@ public class EmployeeMapper {
                 }
             }
         }
+
+        List<Payroll> payrollList = new ArrayList<>();
+        if(employeeDto.getPayrollDtoList() != null){
+            for(PayrollDto payrollDto : employeeDto.getPayrollDtoList()){
+                Payroll payroll = new Payroll();
+                payroll.setDate(payrollDto.getDate());
+                payroll.setReport(payrollDto.getReport());
+                payroll.setTotalAmount(payrollDto.getTotalAmount());
+                payroll.setEmployee(employee);
+                payrollList.add(payroll);
+            }
+        }
+        employee.setPayrolls(payrollList);
         employee.setQualifications(qualifications);
         employee.setLeaves(leaves);
 
@@ -93,6 +108,21 @@ public class EmployeeMapper {
                 }
             }
         }
+
+        List<PayrollDto> payrollDtoList = new ArrayList<>();
+        if(employee.getPayrolls() != null){
+            for(Payroll payroll : employee.getPayrolls()){
+                if(payroll != null){
+                    PayrollDto payrollDto = new PayrollDto();
+                    payrollDto.setId(payroll.getId());
+                    payrollDto.setDate(payroll.getDate());
+                    payrollDto.setReport(payroll.getReport());
+                    payrollDto.setTotalAmount(payroll.getTotalAmount());
+                    payrollDtoList.add(payrollDto);
+                }
+            }
+        }
+        employeeDto.setPayrollDtoList(payrollDtoList);
         employeeDto.setLeavesDtoList(leavesDto);
         employeeDto.setQualificationsDtoList(qualificationDtos);
         employeeDto.setCreatedAt(employee.getCreatedAt());
