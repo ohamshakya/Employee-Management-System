@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,4 +26,6 @@ public class LeaveDto {
 
     @JsonIgnore
     private EmployeeDto employeeDto;
+
+    private List<PayrollDto> payrollDtoList;
 }

@@ -36,4 +36,9 @@ public class Payroll {
     @ManyToOne
     @JoinColumn(name = "job_department_id")
     private JobDepartment jobDepartment;
+
+    @ManyToOne
+    @JoinColumn(name = "leave_id")
+    private Leave leave;
+
 }

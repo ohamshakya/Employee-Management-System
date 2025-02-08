@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,20 +45,33 @@ public class JobDepartmentServiceImpl implements JobDepartmentService {
         existingJobDepartment.setDepartment(jobDepartmentDto.getDepartment());
         existingJobDepartment.setDescription(jobDepartmentDto.getDescription());
         existingJobDepartment.setSalaryRange(jobDepartmentDto.getSalaryRange());
-        existingJobDepartment.getSalaryList().clear();
-        List<Salary> updatedList = new ArrayList<>();
-        for (SalaryDto salary : jobDepartmentDto.getSalaryDtoList()) {
-            if (salary != null) {
+//        existingJobDepartment.getSalaryList().clear();
+//        existingJobDepartment.setSalaryList(
+//                jobDepartmentDto.getSalaryDtoList().stream()
+//                        .filter(dto -> dto != null)
+//                        .map(dto -> Salary.builder()
+//                                .id(dto.getId())
+//                                .amount(dto.getAmount())
+//                                .annual(dto.getAnnual())
+//                                .bonus(dto.getBonus())
+//                                .jobDepartment(existingJobDepartment)
+//                                .build())
+//                        .collect(Collectors.toList())  // Use this instead of toList()
+//        );
+        List<Salary> salaries = existingJobDepartment.getSalaryList();
+        for (SalaryDto dto : jobDepartmentDto.getSalaryDtoList()) {
+            Optional<Salary> existingSalary = salaries.stream()
+                    .filter(s -> s.getId().equals(dto.getId()))
+                    .findFirst();
+
+            if (existingSalary.isPresent()) {
+                Salary salary = existingSalary.get();
+                salary.setAmount(dto.getAmount());
+                salary.setAnnual(dto.getAnnual());
+                salary.setBonus(dto.getBonus());
             }
         }
-//        List<Salary> updatedSalaryList = jobDepartmentDto.getSalaryDtoList().stream().map(dto -> Salary.builder()
-//                .id(dto.getId())
-//                .amount(dto.getAmount())
-//                .annual(dto.getAnnual())
-//                .bonus(dto.getBonus())
-//                .jobDepartment(existingJobDepartment)
-//                .build())
-//                .toList();
+
         jobDepartmentRepo.save(existingJobDepartment);
         return jobDepartmentDto;
     }

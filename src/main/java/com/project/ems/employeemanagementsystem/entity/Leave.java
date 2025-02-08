@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -30,4 +31,10 @@ public class Leave {
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
+
+
+
+    @OneToMany
+    @JoinColumn(name = "payroll_id")
+    private List<Payroll> payrollList;
 }
