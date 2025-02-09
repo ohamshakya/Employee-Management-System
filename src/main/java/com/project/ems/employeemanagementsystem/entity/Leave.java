@@ -32,8 +32,6 @@ public class Leave {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-
-
     @OneToMany
     @JoinColumn(name = "payroll_id")
     private List<Payroll> payrollList;

@@ -27,4 +27,7 @@ public class PayrollDto {
 
     @JsonIgnore
     private JobDepartmentDto jobDepartmentDto;
+
+    @JsonIgnore
+    private LeaveDto leaveDto;
 }
