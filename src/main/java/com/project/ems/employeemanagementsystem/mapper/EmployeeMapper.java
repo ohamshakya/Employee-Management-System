@@ -4,10 +4,7 @@ import com.project.ems.employeemanagementsystem.dto.EmployeeDto;
 import com.project.ems.employeemanagementsystem.dto.LeaveDto;
 import com.project.ems.employeemanagementsystem.dto.PayrollDto;
 import com.project.ems.employeemanagementsystem.dto.QualificationDto;
-import com.project.ems.employeemanagementsystem.entity.Employee;
-import com.project.ems.employeemanagementsystem.entity.Leave;
-import com.project.ems.employeemanagementsystem.entity.Payroll;
-import com.project.ems.employeemanagementsystem.entity.Qualification;
+import com.project.ems.employeemanagementsystem.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +61,7 @@ public class EmployeeMapper {
                 payrollList.add(payroll);
             }
         }
+
         employee.setPayrolls(payrollList);
         employee.setQualifications(qualifications);
         employee.setLeaves(leaves);

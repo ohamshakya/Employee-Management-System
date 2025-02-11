@@ -37,9 +37,12 @@ public class EmployeeDto {
 
     private List<LeaveDto> leavesDtoList;
 
+    private List<AttendanceDto> attendanceDtoList;
+
     private List<QualificationDto> qualificationsDtoList;
 
     private List<PayrollDto> payrollDtoList;
+
 
     private LocalDateTime createdAt;
 
