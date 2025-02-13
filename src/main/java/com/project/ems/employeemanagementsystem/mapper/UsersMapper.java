@@ -6,7 +6,6 @@ import com.project.ems.employeemanagementsystem.entity.Users;
 public class UsersMapper {
     public static Users toEntity(UsersDto usersDto){
         Users users = new Users();
-        users.setId(usersDto.getId());
         users.setUserName(usersDto.getUserName());
         users.setPassword(usersDto.getPassword());
         return users;
