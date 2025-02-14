@@ -8,35 +8,34 @@ import com.project.ems.employeemanagementsystem.repository.UsersRepo;
 import com.project.ems.employeemanagementsystem.service.UsersService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
 public class UsersServiceImpl implements UsersService {
 
-
     @Autowired
     private UsersRepo usersRepo;
 
-    private BCryptPasswordEncoder  encoder;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
-    public UsersServiceImpl(UsersRepo usersRepo, BCryptPasswordEncoder encoder) {
+//    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
+
+    public UsersServiceImpl(UsersRepo usersRepo) {
         this.usersRepo = usersRepo;
-        this.encoder = encoder;
     }
 
     @Override
+    @Transactional
     public UsersDto registerUser(UsersDto usersDto) {
-        Users userDb = usersRepo.findByUsername(usersDto.getUserName());
+        Users userDb = usersRepo.findByUserName(usersDto.getUserName());
         if(userDb != null){
             throw new AlreadyExistsException("Already exists user");
         }
         Users user = UsersMapper.toEntity(usersDto);
         user.setUserName(usersDto.getUserName());
-        user.setPassword(passwordEncoder.encode(usersDto.getPassword()));
+//        user.setPassword(passwordEncoder.encode(usersDto.getPassword()));
+        usersRepo.save(user);
 
         return UsersMapper.toDto(user);
     }

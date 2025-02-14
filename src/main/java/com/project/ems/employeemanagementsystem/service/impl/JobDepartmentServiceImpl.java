@@ -2,8 +2,10 @@ package com.project.ems.employeemanagementsystem.service.impl;
 
 import com.project.ems.employeemanagementsystem.common.exception.ResourceNotFoundException;
 import com.project.ems.employeemanagementsystem.dto.JobDepartmentDto;
+import com.project.ems.employeemanagementsystem.dto.PayrollDto;
 import com.project.ems.employeemanagementsystem.dto.SalaryDto;
 import com.project.ems.employeemanagementsystem.entity.JobDepartment;
+import com.project.ems.employeemanagementsystem.entity.Payroll;
 import com.project.ems.employeemanagementsystem.entity.Salary;
 import com.project.ems.employeemanagementsystem.mapper.JobDepartmentMapper;
 import com.project.ems.employeemanagementsystem.repository.JobDepartmentRepo;
@@ -45,34 +47,51 @@ public class JobDepartmentServiceImpl implements JobDepartmentService {
         existingJobDepartment.setDepartment(jobDepartmentDto.getDepartment());
         existingJobDepartment.setDescription(jobDepartmentDto.getDescription());
         existingJobDepartment.setSalaryRange(jobDepartmentDto.getSalaryRange());
-//        existingJobDepartment.getSalaryList().clear();
-//        existingJobDepartment.setSalaryList(
-//                jobDepartmentDto.getSalaryDtoList().stream()
-//                        .filter(dto -> dto != null)
-//                        .map(dto -> Salary.builder()
-//                                .id(dto.getId())
-//                                .amount(dto.getAmount())
-//                                .annual(dto.getAnnual())
-//                                .bonus(dto.getBonus())
-//                                .jobDepartment(existingJobDepartment)
-//                                .build())
-//                        .collect(Collectors.toList())  // Use this instead of toList()
-//        );
-        List<Salary> salaries = existingJobDepartment.getSalaryList();
-        for (SalaryDto dto : jobDepartmentDto.getSalaryDtoList()) {
-            Optional<Salary> existingSalary = salaries.stream()
-                    .filter(s -> s.getId().equals(dto.getId()))
-                    .findFirst();
-
-            if (existingSalary.isPresent()) {
-                Salary salary = existingSalary.get();
-                salary.setAmount(dto.getAmount());
-                salary.setAnnual(dto.getAnnual());
-                salary.setBonus(dto.getBonus());
+        if(jobDepartmentDto.getSalaryDtoList() != null){
+            existingJobDepartment.getSalaryList().clear();
+            List<Salary> updatedSalary = new ArrayList<>();
+            for(SalaryDto salaryDto : jobDepartmentDto.getSalaryDtoList()){
+                if(salaryDto != null){
+                    Salary salary = new Salary();
+//                    if(salaryDto.getId() != null){
+//                        salary.setId(salaryDto.getId());
+//                    }
+                    salary.setAnnual(salaryDto.getAnnual());
+                    salary.setAmount(salaryDto.getAmount());
+                    salary.setBonus(salaryDto.getBonus());
+                    salary.setJobDepartment(existingJobDepartment);
+                    updatedSalary.add(salary);
+                }
             }
+            existingJobDepartment.getSalaryList().addAll(updatedSalary);
         }
 
-        jobDepartmentRepo.save(existingJobDepartment);
+        if (jobDepartmentDto.getPayrollDtoList() != null) {
+            // Clear existing payrolls
+            existingJobDepartment.getPayrollList().clear();
+
+            // Map and add new payrolls
+            List<Payroll> updatedPayrolls = new ArrayList<>();
+            for (PayrollDto payrollDto : jobDepartmentDto.getPayrollDtoList()) {
+                if (payrollDto != null) {
+                    Payroll payroll = new Payroll();
+//                    if (payrollDto.getId() != null) {
+//                        payroll.setId(payrollDto.getId());
+//                    }
+                    payroll.setDate(payrollDto.getDate());
+                    payroll.setReport(payrollDto.getReport());
+                    payroll.setTotalAmount(payrollDto.getTotalAmount());
+                    payroll.setJobDepartment(existingJobDepartment);
+                    updatedPayrolls.add(payroll);
+                }
+            }
+            existingJobDepartment.getPayrollList().addAll(updatedPayrolls);
+        }
+
+        // Save and convert back to DTO
+        JobDepartment updatedJobDepartment = jobDepartmentRepo.save(existingJobDepartment);
+
+        jobDepartmentRepo.save(updatedJobDepartment);
         return jobDepartmentDto;
     }
 
